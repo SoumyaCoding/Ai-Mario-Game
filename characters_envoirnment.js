@@ -111,6 +111,69 @@ function game(){
     strokeWeight(7);
     noFill();
     ellipse(gameConfig.screenX/2,gameConfig.screenY/2-30,160,160)
-    changeGameStatus(mario)
+    changeGameStatud(mario)
   }
 }  
+
+function startGame()
+{
+  GameStatus = "start";
+  document.getElementById("status").innerHTML = "Game Is Loading";
+}
+
+// change game status if any key is pressed
+function changeGameStatud(character){
+ if(noseX !="" && gameConfig.status==="start" && GameStatus=="start") { 
+   document.getElementById("status").innerHTML = "Game Is Loaded";
+   world_start.play();
+ initializeCharacterStatus(mario)
+    gameConfig.status= "play"
+  }
+  if(gameConfig.status==="gameover" && keyDown(control.revive)) {
+    gameConfig.status= "start"        
+  }
+}
+
+
+
+
+/*=====  End of Game Status   ======*/
+
+
+/*=============================================
+=                 Instialize                  =
+=============================================*/
+
+//initialize
+function instializeInSetup(character){
+	frameRate(120);
+	
+	character.scale=0.35;
+	initializeCharacterStatus(character)
+
+  bricks.displace(bricks);
+	platforms.displace(platforms);
+	coins.displace(coins);
+	coins.displace(platforms);
+	coins.collide(pipes);
+	coins.displace(bricks);		
+
+  // change the scale of clouds
+	clouds.forEach(function(element){
+		element.scale=random(1,2);
+	})
+}
+
+function initializeCharacterStatus(character){
+  // set up the initial config of character  
+  character.scale=0.35;
+  character["killing"]=0; //while is killing enemy
+  character["kills"]=0;
+  character["live"]=true;
+  character["liveNumber"]=gameConfig.initialLifes;
+  character["status"]='live';
+  character["coins"]=0;
+  character["dying"]=0;
+  character.position.x=gameConfig.startingPointX;
+  character.position.y=gameConfig.startingPointY;
+}
